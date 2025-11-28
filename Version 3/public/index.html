@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>Käsekuchen.EV – Gilde</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/themes.css" />
+  <link rel="stylesheet" href="css/decor.css" />
+</head>
+<body>
+  <!-- Saison-Deko Overlay -->
+  <div id="season-decor-root"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-block">
+        <div class="logo-circle">🧀</div>
+        <div class="logo-text">
+          <div class="logo-title">Käsekuchen.EV</div>
+          <div class="logo-subtitle">GW2 Gilde • [KKEv]</div>
+        </div>
+      </div>
+      <div class="nav-right">
+        <a href="https://discord.gg/DEININVITE" target="_blank" class="btn btn-primary">
+          💬 Discord
+        </a>
+
+        <div class="theme-controls">
+          <select id="theme-select" class="theme-select">
+            <option value="dark">Standard Dark</option>
+            <option value="light">Standard Light</option>
+            <option value="winter">❄️ Winter</option>
+            <option value="halloween">🎃 Halloween</option>
+            <option value="spring">🌸 Frühling</option>
+            <option value="autumn">🍂 Herbst</option>
+          </select>
+          <input
+            type="color"
+            id="accent-picker"
+            class="accent-picker"
+            title="Akzentfarbe anpassen"
+          />
+          <label class="auto-theme-label">
+            <input type="checkbox" id="theme-auto-toggle" />
+            Auto-Theme
+          </label>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- HERO / GUILD INFO -->
+    <section class="hero">
+      <div class="hero-main">
+        <div>
+          <h1 id="guild-name">Käsekuchen.EV</h1>
+          <p id="guild-tag" class="tagline">[KKEv] • Käsekuchen für alle.</p>
+          <div class="hero-badges">
+            <span class="pill" id="guild-level-pill">Lvl ?</span>
+            <span class="pill" id="guild-member-pill">0 Mitglieder</span>
+            <span class="pill soft" id="guild-hall-pill">Gildenhalle: –</span>
+          </div>
+        </div>
+        <div class="hero-motd">
+          <div class="motd-label">Gilden-MOTD</div>
+          <div class="motd-box" id="guild-motd">Lade Nachricht…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS CARDS -->
+    <section class="grid grid-3">
+      <article class="card">
+        <div class="card-header">
+          <h2>Gildenstatus</h2>
+          <span class="status-dot status-ok"></span>
+        </div>
+        <div class="stats-row">
+          <div>
+            <div class="stat-label">Level</div>
+            <div class="stat-value" id="guild-level">–</div>
+          </div>
+          <div>
+            <div class="stat-label">Mitglieder</div>
+            <div class="stat-value" id="guild-member-count">–</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <h2>Gildenhalle</h2>
+          <span class="pill soft" id="guild-hall-status-pill">Lade…</span>
+        </div>
+        <div class="guildhall-info">
+          <div class="gh-line">
+            <span>Halle:</span>
+            <span id="guild-hall-name">–</span>
+          </div>
+          <div class="gh-line">
+            <span>Level:</span>
+            <span id="guild-hall-level">–</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <h2>Treasure Overview</h2>
+          <span class="pill soft" id="treasury-status-pill">Lade…</span>
+        </div>
+        <div class="treasury-summary" id="treasury-summary">
+          Noch keine Daten geladen.
+        </div>
+      </article>
+    </section>
+
+    <!-- MEMBERS -->
+    <section class="card">
+      <div class="table-header">
+        <span>Mitglieder</span>
+        <div class="table-header-right">
+          <span class="pill-counter">
+            <span id="member-count-label">0</span> Mitglieder
+          </span>
+
+          <select id="member-rank-filter" class="table-select">
+            <option value="all">Alle Ränge</option>
+          </select>
+
+          <select id="member-sort-select" class="table-select">
+            <option value="name">Sortierung: Name</option>
+            <option value="rank">Sortierung: Rang</option>
+            <option value="joined">Sortierung: Beigetreten</option>
+          </select>
+
+          <span class="status-pill" id="members-status-pill">Lade…</span>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Account</th>
+              <th>Rang</th>
+              <th>Beigetreten</th>
+            </tr>
+          </thead>
+          <tbody id="members-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- GUILD LOG -->
+    <section class="card">
+      <div class="card-header">
+        <h2>Gildenlog (letzte Aktionen)</h2>
+        <span class="pill soft" id="guild-log-status">Lade…</span>
+      </div>
+      <ul class="log-list" id="guild-log-list"></ul>
+    </section>
+
+    <!-- ACCOUNTS (deine API Keys) -->
+    <section class="card">
+      <div class="card-header">
+        <h2>Verbundene Accounts</h2>
+        <span class="pill soft" id="accounts-status-pill">Lade…</span>
+      </div>
+      <div class="accounts-grid" id="accounts-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>🧀 Käsekuchen.EV – GW2 Gilde</span>
+    <span class="footer-meta">Powered by Guild Wars 2 API • Season Themes &amp; FX</span>
+  </footer>
+
+  <script src="js/themes.js"></script>
+  <script src="js/decor.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

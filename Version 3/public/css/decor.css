@@ -1,0 +1,77 @@
+#season-decor-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Schneeflocken */
+
+#season-decor-root .snowflake {
+  position: absolute;
+  top: -10%;
+  color: #e5f2ff;
+  text-shadow: 0 0 6px rgba(148, 163, 184, 0.6);
+  opacity: 0;
+  animation-name: snow-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes snow-fall {
+  0% {
+    transform: translateY(-10vh);
+  }
+  100% {
+    transform: translateY(110vh);
+  }
+}
+
+/* Halloween Deko */
+
+#season-decor-root .spooky {
+  position: absolute;
+  font-size: 1.8rem;
+  opacity: 0;
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.8));
+  animation-name: spooky-float;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes spooky-float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Sichtbarkeit nach Theme */
+
+#season-decor-root[data-season-theme="winter"] .snowflake {
+  opacity: 0.9;
+}
+
+#season-decor-root[data-season-theme="halloween"] .spooky {
+  opacity: 0.95;
+}
+
+/* In anderen Themes ausblenden */
+
+#season-decor-root[data-season-theme="spring"] .snowflake,
+#season-decor-root[data-season-theme="spring"] .spooky,
+#season-decor-root[data-season-theme="autumn"] .snowflake,
+#season-decor-root[data-season-theme="autumn"] .spooky,
+#season-decor-root[data-season-theme="dark"] .snowflake,
+#season-decor-root[data-season-theme="dark"] .spooky,
+#season-decor-root[data-season-theme="light"] .snowflake,
+#season-decor-root[data-season-theme="light"] .spooky {
+  opacity: 0;
+}

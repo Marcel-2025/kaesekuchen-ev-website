@@ -1,0 +1,446 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Layout */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(16px);
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.9), transparent);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.logo-block {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 20%, #fde68a, #f97316);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.logo-title {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.logo-subtitle {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+/* Buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+  user-select: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #0f172a;
+  border-color: transparent;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* Theme Controls */
+
+.theme-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.theme-select {
+  font-size: 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--muted);
+  padding: 0.25rem 0.6rem;
+}
+
+.accent-picker {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.auto-theme-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+/* Hero */
+
+.hero {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.tagline {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.hero-motd {
+  flex: 1;
+  min-width: 260px;
+  max-width: 420px;
+}
+
+.motd-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.motd-box {
+  border-radius: 0.9rem;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  padding: 0.75rem 0.9rem;
+  font-size: 0.9rem;
+}
+
+/* Cards / Sections */
+
+.card {
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-header h2 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Pills & Badges */
+
+.pill,
+.pill.soft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--bg-softer);
+  color: var(--muted);
+}
+
+.pill.soft {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: transparent;
+}
+
+.status-pill {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-softer);
+  color: var(--muted);
+}
+
+.pill-counter {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* Status Dot */
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--success);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+}
+
+/* Grid */
+
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 850px) {
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Stats */
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.stat-value {
+  font-size: 1.2rem;
+}
+
+/* Guild Hall / Treasury */
+
+.guildhall-info,
+.treasury-summary {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.gh-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.2rem;
+}
+
+/* Table */
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.table-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.table-wrapper {
+  border-radius: 0.8rem;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+thead {
+  background: var(--bg-softer);
+}
+
+th,
+td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+tbody tr:nth-child(even) {
+  background: rgba(15, 23, 42, 0.4);
+}
+
+tbody tr:hover {
+  background: rgba(148, 163, 184, 0.18);
+}
+
+/* Rank pill */
+
+.rank-pill {
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--muted);
+  background: var(--bg-softer);
+}
+
+.rank-pill.leader {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Selects */
+
+.table-select {
+  font-size: 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-softer);
+  color: var(--muted);
+  padding: 0.15rem 0.6rem;
+}
+
+/* Guild log */
+
+.log-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  max-height: 260px;
+  overflow: auto;
+  font-size: 0.85rem;
+}
+
+.log-list li {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* Accounts */
+
+.accounts-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.account-card {
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--bg-softer);
+  padding: 0.6rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.account-card .acc-name {
+  font-weight: 600;
+}
+
+.account-card .acc-world {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+/* Footer */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 0.8rem 1rem 1.2rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.footer-meta {
+  opacity: 0.7;
+}
