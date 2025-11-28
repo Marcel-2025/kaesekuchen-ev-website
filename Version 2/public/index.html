@@ -88,6 +88,76 @@
         --success: #22c55e;
       }
 
+            /* Saison-Deko Overlay */
+      #season-decor-root {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1; /* unter Header (der hat 10), über Hintergrund */
+        overflow: hidden;
+      }
+
+      /* Schneeflocken */
+      #season-decor-root .snowflake {
+        position: absolute;
+        top: -10%;
+        color: #e5f2ff;
+        text-shadow: 0 0 6px rgba(148, 163, 184, 0.6);
+        opacity: 0;
+        animation-name: snow-fall;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes snow-fall {
+        0% {
+          transform: translateY(-10vh);
+        }
+        100% {
+          transform: translateY(110vh);
+        }
+      }
+
+      /* Halloween-Deko */
+      #season-decor-root .spooky {
+        position: absolute;
+        font-size: 1.8rem;
+        opacity: 0;
+        filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.8));
+        animation-name: spooky-float;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+      }
+
+      @keyframes spooky-float {
+        0%   { transform: translateY(0px); }
+        50%  { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+      }
+
+      /* Sichtbarkeit je nach Theme */
+      #season-decor-root[data-season-theme="winter"] .snowflake {
+        opacity: 0.85;
+      }
+
+      #season-decor-root[data-season-theme="halloween"] .spooky {
+        opacity: 0.95;
+      }
+
+      /* In anderen Themes alles ausblenden (fallback, optional) */
+      #season-decor-root[data-season-theme="spring"] .snowflake,
+      #season-decor-root[data-season-theme="spring"] .spooky,
+      #season-decor-root[data-season-theme="autumn"] .snowflake,
+      #season-decor-root[data-season-theme="autumn"] .spooky,
+      #season-decor-root[data-season-theme="dark"] .snowflake,
+      #season-decor-root[data-season-theme="dark"] .spooky,
+      #season-decor-root[data-season-theme="light"] .snowflake,
+      #season-decor-root[data-season-theme="light"] .spooky {
+        opacity: 0;
+      }
+
+
       /* Kleine Styles für Theme-Controls */
       .theme-controls {
         display: flex;
@@ -852,14 +922,19 @@
     /* --------------- THEME --------------- */
     const THEME_KEY = "kkev-theme";
     const ACCENT_KEY = "kkev-accent";
+    const AUTO_MODE_KEY = "kkev-theme-auto";
+    let currentTheme = "dark";
 
     function applyTheme(theme) {
+      currentTheme = theme;
       document.documentElement.setAttribute("data-theme", theme);
       const select = document.getElementById("theme-select");
       if (select && select.value !== theme) {
         select.value = theme;
       }
+      updateSeasonalDecor(theme);
     }
+
 
     function applyAccentColor(color) {
       if (!color) return;
@@ -867,8 +942,6 @@
       document.documentElement.style.setProperty("--accent-soft", `${color}33`); // leichte Transparenz
       localStorage.setItem(ACCENT_KEY, color);
     }
-
-    const AUTO_MODE_KEY = "kkev-theme-auto";
 
     // einfache Event-Erkennung (GW2-Events grob nach Datum)
     function detectGw2EventTheme(date = new Date()) {
@@ -1229,8 +1302,56 @@
       `.trim();
     });
 
+    function initSeasonalDecor() {
+    const root = document.getElementById("season-decor-root");
+    if (!root) return;
+
+    // Schneeflocken generieren
+    for (let i = 0; i < 40; i++) {
+      const span = document.createElement("span");
+      span.className = "snowflake";
+      span.textContent = "❄";
+
+      const left = Math.random() * 100;
+      const duration = 10 + Math.random() * 15; // 10–25s
+      const delay = Math.random() * -duration;  // negative delay für gestreute Startzeiten
+      const size = 0.7 + Math.random() * 1.1;   // 0.7–1.8rem
+
+      span.style.left = left + "%";
+      span.style.animationDuration = duration + "s";
+      span.style.animationDelay = delay + "s";
+      span.style.fontSize = size + "rem";
+
+      root.appendChild(span);
+    }
+
+    // Halloween-Spuk: Kürbisse, Kerzen, Fledermaus etc.
+    const spookyEmojis = ["🎃", "🕯️", "🕸️", "🦇"];
+    spookyEmojis.forEach((emoji, idx) => {
+      const span = document.createElement("span");
+      span.className = "spooky";
+      span.textContent = emoji;
+
+      // Positionen: links/rechts, verschiedene Höhen
+      const fromLeft = idx % 2 === 0;
+      span.style.bottom = 5 + idx * 7 + "%";
+      span.style[fromLeft ? "left" : "right"] = "4%";
+      span.style.animationDelay = (idx * 0.8) + "s";
+
+      root.appendChild(span);
+    });
+  }
+
+  function updateSeasonalDecor(theme) {
+    const root = document.getElementById("season-decor-root");
+    if (!root) return;
+    root.setAttribute("data-season-theme", theme);
+  }
+
     /* ---------------- INIT ---------------- */
   document.addEventListener("DOMContentLoaded", () => {
+  initSeasonalDecor();
+  updateSeasonalDecor(currentTheme);
   loadGuildInfo();
   loadGuildMembers();
   loadGuildHall();
