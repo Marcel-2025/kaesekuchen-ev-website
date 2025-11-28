@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>Käsekuchen.EV – Guild Wars 2 Gilde</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-soft: #121827;
+      --bg-softer: #151b2f;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --accent: #f97316;
+      --accent-soft: rgba(249, 115, 22, 0.16);
+      --border: rgba(148, 163, 184, 0.4);
+      --danger: #f97373;
+      --success: #4ade80;
+    }
+
+    [data-theme="light"] {
+      --bg: #f3f4f6;
+      --bg-soft: #ffffff;
+      --bg-softer: #f9fafb;
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #f97316;
+      --accent-soft: rgba(249, 115, 22, 0.12);
+      --border: rgba(209, 213, 219, 1);
+      --danger: #dc2626;
+      --success: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827, var(--bg));
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.92), transparent);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.8rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 20%, #facc15, var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-text span:first-child {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 0.9rem;
+    }
+
+    .logo-text span:last-child {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      border: 1px solid transparent;
+      background: none;
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #facc15);
+      color: #111827;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    }
+
+    .btn-outline {
+      border-color: var(--border);
+      background-color: rgba(15, 23, 42, 0.6);
+      color: var(--muted);
+    }
+
+    [data-theme="light"] .btn-outline {
+      background-color: #f9fafb;
+    }
+
+    .btn-icon {
+      font-size: 1rem;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.8rem 1.4rem 2.5rem;
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 3vw, 2.7rem);
+      line-height: 1.05;
+      margin: 0 0 0.9rem;
+    }
+
+    .hero-title span.highlight {
+      background: linear-gradient(90deg, var(--accent), #facc15);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+      background-color: rgba(15, 23, 42, 0.8);
+    }
+
+    [data-theme="light"] .hero-subtitle {
+      background-color: rgba(243, 244, 246, 0.9);
+    }
+
+    .hero-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #22c55e, #15803d);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 36rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-tag {
+      font-size: 0.76rem;
+      padding: 0.28rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--muted);
+    }
+
+    [data-theme="light"] .hero-tag {
+      background-color: #f9fafb;
+    }
+
+    .hero-card {
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 0 0, var(--accent-soft), transparent 60%),
+        var(--bg-soft);
+      padding: 1.1rem 1rem 1rem;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
+    }
+
+    [data-theme="light"] .hero-card {
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.09);
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .guild-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+    }
+
+    .guild-tag {
+      font-size: 0.8rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background-color: var(--bg-softer);
+    }
+
+    .guild-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .stat-pill {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-softer);
+      padding: 0.45rem 0.6rem;
+      font-size: 0.78rem;
+    }
+
+    .stat-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-weight: 600;
+      margin-top: 0.15rem;
+    }
+
+    .motd-box {
+      margin-top: 0.4rem;
+      border-radius: 10px;
+      border: 1px dashed var(--border);
+      padding: 0.6rem 0.7rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      max-height: 120px;
+      overflow-y: auto;
+      background-color: var(--bg-softer);
+    }
+
+    .motd-label {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.64rem;
+      margin-bottom: 0.2rem;
+      color: var(--muted);
+    }
+
+    /* SECTIONS */
+    section {
+      margin-bottom: 2.4rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      align-items: baseline;
+      margin-bottom: 0.9rem;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .section-subtitle {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .card {
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-soft);
+      padding: 1rem 1rem;
+    }
+
+    /* MEMBERS / TABLE */
+    .table-wrapper {
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-soft);
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 0.6rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .table-header-right {
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .pill-counter {
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+      background-color: var(--bg-softer);
+    }
+
+    .status-pill {
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+      background-color: var(--bg-softer);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    thead {
+      background-color: rgba(15, 23, 42, 0.9);
+    }
+
+    [data-theme="light"] thead {
+      background-color: #e5e7eb;
+    }
+
+    th, td {
+      padding: 0.55rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    tbody tr:nth-child(2n) {
+      background-color: rgba(15, 23, 42, 0.4);
+    }
+
+    [data-theme="light"] tbody tr:nth-child(2n) {
+      background-color: #f3f4f6;
+    }
+
+    .rank-pill {
+      padding: 0.18rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.72rem;
+    }
+
+    .rank-pill.leader {
+      border-color: #facc15;
+      color: #facc15;
+    }
+
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    /* LEADERBOARD */
+    .leaderboard-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .leaderboard-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.4);
+      font-size: 0.85rem;
+    }
+
+    .leaderboard-item:last-child {
+      border-bottom: none;
+    }
+
+    .leaderboard-name {
+      font-weight: 500;
+    }
+
+    .leaderboard-meta {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    /* ACCOUNTS / CHARACTERS */
+    .accounts-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .select {
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background-color: var(--bg-softer);
+      color: var(--text);
+      font-size: 0.8rem;
+    }
+
+    [data-theme="light"] .select {
+      background-color: #f9fafb;
+      color: #111827;
+    }
+
+    .characters-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.4rem 0 0;
+      font-size: 0.85rem;
+    }
+
+    .characters-list li {
+      padding: 0.3rem 0;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.35);
+    }
+
+    .characters-list li:last-child {
+      border-bottom: none;
+    }
+
+    /* FORM */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 0.8rem;
+    }
+
+    @media (max-width: 700px) {
+      .form-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.8rem;
+    }
+
+    .form-field label {
+      color: var(--muted);
+    }
+
+    .form-field input,
+    .form-field textarea {
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.55rem;
+      background-color: var(--bg-softer);
+      color: var(--text);
+      font-size: 0.85rem;
+      resize: vertical;
+      min-height: 40px;
+    }
+
+    [data-theme="light"] .form-field input,
+    [data-theme="light"] .form-field textarea {
+      background-color: #ffffff;
+      color: #111827;
+    }
+
+    .form-hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    .form-success {
+      color: var(--success);
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+    }
+
+    .form-error {
+      color: var(--danger);
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.4rem 1.5rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="logo">
+        <div class="logo-icon">🧀</div>
+        <div class="logo-text">
+          <span>KÄSEKUCHEN.EV</span>
+          <span>Guild Wars 2 Gilde</span>
+        </div>
+      </div>
+      <div class="nav-right">
+        <a
+          href="https://discord.gg/QKzbUV2wab"
+          target="_blank"
+          rel="noreferrer"
+          class="btn btn-primary"
+        >
+          <span class="btn-icon">💬</span>
+          <span>Discord beitreten</span>
+        </a>
+        <button class="btn btn-outline" id="theme-toggle">
+          <span class="btn-icon" id="theme-icon">🌙</span>
+          <span id="theme-label">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="hero-subtitle">
+          <div class="hero-dot"></div>
+          <span>Aktive Community in Tyria</span>
+        </div>
+        <h1 class="hero-title">
+          <span class="highlight">Käsekuchen.EV</span><br />
+          Deine gemütliche GW2-Gilde.
+        </h1>
+        <p class="hero-desc">
+          Raids, Strikes, Fraktale, WvW und entspannte Feierabendruns –
+          bei uns stehen Teamplay, Humor und eine ordentliche Portion
+          Käsekuchen im Fokus. Bring deine Builds, deinen Humor und
+          deinen Hunger mit. 🍰
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag">💬 Discord Community</span>
+          <span class="hero-tag">🛡️ Raids & Strikes</span>
+          <span class="hero-tag">🌍 EU / Deutschsprachig</span>
+          <span class="hero-tag">😄 Casual & Progress</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.6rem;">
+          <a href="#members" class="btn btn-primary">
+            <span class="btn-icon">📜</span>
+            <span>Mitglieder ansehen</span>
+          </a>
+          <a href="#apply" class="btn btn-outline">
+            <span>Gildenbewerbung</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div>
+            <div class="guild-name">
+              <span id="guild-name">Käsekuchen.EV</span>
+              <span class="guild-tag" id="guild-tag">[EV]</span>
+            </div>
+            <div class="guild-meta" id="guild-meta">
+              Daten werden geladen …
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-pill">
+            <div class="stat-label">Mitglieder</div>
+            <div class="stat-value" id="stat-members">–</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-label">Gilden-Level</div>
+            <div class="stat-value" id="stat-level">–</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-label">Server</div>
+            <div class="stat-value" id="stat-world">–</div>
+          </div>
+        </div>
+
+        <div class="motd-box">
+          <div class="motd-label">Nachricht des Tages</div>
+          <div id="motd-text">Wird aus der GW2-API geladen…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEMBERS & LEADERBOARD -->
+    <section id="members">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Mitglieder</div>
+          <div class="section-subtitle">Direkt aus der offiziellen Guild Wars 2 API</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns: minmax(0,3fr) minmax(0,2fr);gap:1rem;">
+        <!-- Tabelle -->
+        <div class="table-wrapper">
+          <div class="table-header">
+            <span>Gildenmitglieder</span>
+            <div class="table-header-right">
+              <span class="pill-counter">
+                <span id="member-count-label">0</span> Mitglieder
+              </span>
+              <span class="status-pill" id="members-status-pill">Lade…</span>
+            </div>
+          </div>
+          <div style="max-height:320px;overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Accountname</th>
+                  <th>Rang</th>
+                  <th>Beigetreten</th>
+                </tr>
+              </thead>
+              <tbody id="members-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="card">
+          <div class="section-header" style="margin-bottom:0.4rem;">
+            <div class="section-title" style="font-size:1rem;">Leaderboard</div>
+          </div>
+          <p class="section-subtitle" style="margin-bottom:0.6rem;font-size:0.8rem;">
+            Älteste Mitglieder & Führung – anhand Beitrittsdatum und Rang.
+          </p>
+          <ul class="leaderboard-list" id="leaderboard-list">
+            <!-- per JS -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="status-text" id="members-status-text">
+        Die Mitgliederliste wird mit deinem GW2-API-Key serverseitig geladen.
+      </div>
+    </section>
+
+    <!-- ACCOUNTS / CHARACTERS -->
+    <section id="accounts-section">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Charaktere nach Account</div>
+          <div class="section-subtitle">
+            Nutzt deine GW2-Accounts-API-Endpunkte, um Charakterlisten zu laden.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="accounts-bar">
+          <select id="account-select" class="select">
+            <option value="">Accounts werden geladen…</option>
+          </select>
+          <button class="btn btn-outline" id="load-chars-btn">
+            <span class="btn-icon">🧙‍♂️</span>
+            <span>Charaktere anzeigen</span>
+          </button>
+          <span class="status-pill" id="accounts-status-pill">Lade Accounts…</span>
+        </div>
+        <div class="status-text" id="accounts-status-text">
+          Falls hier ein Fehler steht, prüfe, ob dein Backend die Routen <code>/api/accounts</code>
+          und <code>/api/accounts/:accountId/characters</code> bereitstellt.
+        </div>
+        <ul class="characters-list" id="characters-list"></ul>
+      </div>
+    </section>
+
+    <!-- APPLICATION FORM -->
+    <section id="apply">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Gildenbewerbung</div>
+          <div class="section-subtitle">
+            Kurzes Formular ausfüllen und Text im Anschluss z. B. im Discord posten.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <form id="apply-form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="apply-name">Dein Name / Spitzname</label>
+              <input type="text" id="apply-name" required />
+            </div>
+            <div class="form-field">
+              <label for="apply-account">GW2 Accountname (z. B. Spieler.1234)</label>
+              <input type="text" id="apply-account" required />
+            </div>
+            <div class="form-field">
+              <label for="apply-time">Spielzeiten (Tage / Uhrzeit)</label>
+              <input type="text" id="apply-time" placeholder="z. B. Mo–Do ab 19 Uhr" />
+            </div>
+            <div class="form-field">
+              <label for="apply-experience">Erfahrung</label>
+              <input type="text" id="apply-experience" placeholder="z. B. Raids, Fraktale T4, Open World" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="apply-message">Warum möchtest du zu Käsekuchen.EV?</label>
+            <textarea id="apply-message" rows="4" required></textarea>
+            <div class="form-hint">
+              Tipp: Nach dem Absenden kannst du den generierten Bewerbungstext kopieren und im Discord posten.
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <span class="btn-icon">📩</span>
+            <span>Bewerbungstext erzeugen</span>
+          </button>
+
+          <div id="apply-feedback"></div>
+
+          <div class="form-field" style="margin-top:0.8rem;">
+            <label for="apply-output">Generierter Bewerbungstext</label>
+            <textarea id="apply-output" rows="5" readonly></textarea>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>❤️ Käsekuchen.EV – Website powered by Guild Wars 2 API.</div>
+    <div>API Docs: <a href="https://wiki.guildwars2.com/wiki/API:2" target="_blank" rel="noreferrer">GW2 Wiki</a></div>
+  </footer>
+
+  <script>
+    // ---------- THEME ----------
+    const THEME_KEY = "kkev-theme";
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      const icon = document.getElementById("theme-icon");
+      const label = document.getElementById("theme-label");
+      if (theme === "light") {
+        icon.textContent = "☀️";
+        label.textContent = "Light";
+      } else {
+        icon.textContent = "🌙";
+        label.textContent = "Dark";
+      }
+    }
+
+    (function initTheme() {
+      const saved = localStorage.getItem(THEME_KEY);
+      const initial = saved === "light" || saved === "dark" ? saved : "dark";
+      applyTheme(initial);
+    })();
+
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "dark";
+      const next = current === "dark" ? "light" : "dark";
+      applyTheme(next);
+      localStorage.setItem(THEME_KEY, next);
+    });
+
+    // ---------- UTIL ----------
+    function formatJoinDate(iso) {
+      if (!iso) return "–";
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleDateString("de-DE", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      });
+    }
+
+    let guildMembers = [];
+
+    // ---------- GUILD INFO ----------
+    async function loadGuildInfo() {
+      const nameEl = document.getElementById("guild-name");
+      const tagEl = document.getElementById("guild-tag");
+      const metaEl = document.getElementById("guild-meta");
+      const statMembers = document.getElementById("stat-members");
+      const statLevel = document.getElementById("stat-level");
+      const statWorld = document.getElementById("stat-world");
+      const motdEl = document.getElementById("motd-text");
+
+      try {
+        const res = await fetch("/api/guild-info");
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || "HTTP " + res.status);
+        }
+        const data = await res.json();
+
+        nameEl.textContent = data.name || "Käsekuchen.EV";
+        tagEl.textContent = data.tag ? `[${data.tag}]` : "[EV]";
+        metaEl.textContent = `Level ${data.level ?? "?"} • ${data.member_count ?? "?"} Mitglieder`;
+
+        statMembers.textContent = data.member_count ?? "–";
+        statLevel.textContent = data.level ?? "–";
+        statWorld.textContent = data.world ?? "–";
+
+        motdEl.textContent =
+          data.motd ||
+          "Noch keine MOTD gesetzt – perfekte Gelegenheit für eine epische Käsekuchen-Ansage.";
+      } catch (err) {
+        console.error("Guild-Info Fehler:", err);
+        metaEl.textContent = "Fehler beim Laden der Gildeninformationen.";
+        motdEl.textContent = "Fehler beim Abrufen der MOTD: " + err.message;
+        motdEl.style.color = "var(--danger)";
+      }
+    }
+
+    // ---------- MEMBERS & LEADERBOARD ----------
+    async function loadGuildMembers() {
+      const bodyEl = document.getElementById("members-body");
+      const countLabel = document.getElementById("member-count-label");
+      const statusPill = document.getElementById("members-status-pill");
+      const statusText = document.getElementById("members-status-text");
+
+      bodyEl.innerHTML = "";
+      statusPill.textContent = "Lade Daten…";
+
+      try {
+        const res = await fetch("/api/guild-members");
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || "HTTP " + res.status);
+        }
+        const data = await res.json();
+        const members = Array.isArray(data.members) ? data.members : [];
+
+        guildMembers = members;
+
+        members.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+        countLabel.textContent = members.length;
+
+        for (const m of members) {
+          const tr = document.createElement("tr");
+
+          const tdName = document.createElement("td");
+          tdName.textContent = m.name || "Unbekannt";
+
+          const tdRank = document.createElement("td");
+          const rankSpan = document.createElement("span");
+          rankSpan.className = "rank-pill";
+          if ((m.rank || "").toLowerCase().includes("leader")) {
+            rankSpan.classList.add("leader");
+          }
+          rankSpan.textContent = m.rank || "Mitglied";
+          tdRank.appendChild(rankSpan);
+
+          const tdJoined = document.createElement("td");
+          tdJoined.textContent = formatJoinDate(m.joined);
+
+          tr.appendChild(tdName);
+          tr.appendChild(tdRank);
+          tr.appendChild(tdJoined);
+
+          bodyEl.appendChild(tr);
+        }
+
+        statusPill.textContent = "Live aus der GW2-API";
+        statusPill.style.borderColor = "rgba(34,197,94,0.7)";
+        statusPill.style.color = "var(--success)";
+        statusText.textContent = "Mitgliederliste erfolgreich geladen.";
+        buildLeaderboard();
+      } catch (err) {
+        console.error("Mitglieder-Fehler:", err);
+        statusPill.textContent = "Fehler";
+        statusPill.style.borderColor = "rgba(248,113,113,0.8)";
+        statusPill.style.color = "var(--danger)";
+        statusText.textContent =
+          "Konnte Mitgliederliste nicht laden: " +
+          err.message +
+          ". Prüfe API-Key und Guild-Scope.";
+      }
+    }
+
+    function buildLeaderboard() {
+      const listEl = document.getElementById("leaderboard-list");
+      listEl.innerHTML = "";
+
+      if (!guildMembers || guildMembers.length === 0) {
+        const li = document.createElement("li");
+        li.textContent = "Noch keine Daten – Mitgliederliste wurde nicht geladen.";
+        li.style.fontSize = "0.8rem";
+        li.style.color = "var(--muted)";
+        listEl.appendChild(li);
+        return;
+      }
+
+      const memberCopy = guildMembers.slice();
+
+      // Punkte: Leader/Offi + frühes Beitrittsdatum
+      memberCopy.sort((a, b) => {
+        const rankScore = (m) => {
+          const r = (m.rank || "").toLowerCase();
+          if (r.includes("leader")) return 0;
+          if (r.includes("officer") || r.includes("offi")) return 1;
+          return 2;
+        };
+        const dateScore = (m) => {
+          const d = new Date(m.joined);
+          if (isNaN(d.getTime())) return Infinity;
+          return d.getTime();
+        };
+
+        const aRank = rankScore(a);
+        const bRank = rankScore(b);
+        if (aRank !== bRank) return aRank - bRank;
+
+        return dateScore(a) - dateScore(b);
+      });
+
+      const top = memberCopy.slice(0, 5);
+
+      top.forEach((m, index) => {
+        const li = document.createElement("li");
+        li.className = "leaderboard-item";
+
+        const left = document.createElement("div");
+        left.className = "leaderboard-name";
+        left.textContent = `${index + 1}. ${m.name || "Unbekannt"}`;
+
+        const right = document.createElement("div");
+        right.className = "leaderboard-meta";
+        const joined = formatJoinDate(m.joined);
+        right.textContent = `${m.rank || "Mitglied"} • seit ${joined}`;
+
+        li.appendChild(left);
+        li.appendChild(right);
+        listEl.appendChild(li);
+      });
+    }
+
+    // ---------- ACCOUNTS & CHARACTERS ----------
+    async function loadAccounts() {
+      const selectEl = document.getElementById("account-select");
+      const statusPill = document.getElementById("accounts-status-pill");
+      const statusText = document.getElementById("accounts-status-text");
+
+      try {
+        const res = await fetch("/api/accounts");
+        if (!res.ok) {
+          throw new Error("HTTP " + res.status);
+        }
+        const accounts = await res.json();
+
+        if (!Array.isArray(accounts) || accounts.length === 0) {
+          selectEl.innerHTML = '<option value="">Keine Accounts gefunden</option>';
+          statusPill.textContent = "Keine Accounts";
+          statusText.textContent =
+            "Es wurden keine Accounts zurückgegeben. Prüfe deine GW2_API_KEYS und das Backend.";
+          return;
+        }
+
+        selectEl.innerHTML = "";
+        accounts.forEach((acc) => {
+          const opt = document.createElement("option");
+          opt.value = acc.id; // oder acc.name, Backend unterstützt beides
+          opt.textContent = `${acc.name} (World: ${acc.world})`;
+          selectEl.appendChild(opt);
+        });
+
+        statusPill.textContent = "Accounts geladen";
+        statusPill.style.borderColor = "rgba(34,197,94,0.7)";
+        statusPill.style.color = "var(--success)";
+        statusText.textContent = "Wähle einen Account und klicke auf „Charaktere anzeigen“.";
+      } catch (err) {
+        console.error("Accounts-Fehler:", err);
+        statusPill.textContent = "Fehler";
+        statusPill.style.borderColor = "rgba(248,113,113,0.8)";
+        statusPill.style.color = "var(--danger)";
+        statusText.textContent =
+          "Konnte Accounts nicht laden. Wenn du diese Funktion nicht brauchst, kannst du den Abschnitt ignorieren.";
+      }
+    }
+
+    async function loadCharactersForSelected() {
+      const selectEl = document.getElementById("account-select");
+      const statusPill = document.getElementById("accounts-status-pill");
+      const statusText = document.getElementById("accounts-status-text");
+      const listEl = document.getElementById("characters-list");
+
+      const accountId = selectEl.value;
+      if (!accountId) {
+        statusText.textContent = "Bitte wähle zuerst einen Account aus.";
+        return;
+      }
+
+      listEl.innerHTML = "";
+      statusPill.textContent = "Lade Charaktere…";
+
+      try {
+        const res = await fetch(
+          "/api/accounts/" + encodeURIComponent(accountId) + "/characters"
+        );
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || "HTTP " + res.status);
+        }
+
+        const data = await res.json();
+        const chars = Array.isArray(data.characters) ? data.characters : [];
+
+        if (chars.length === 0) {
+          listEl.innerHTML =
+            '<li>Keine Charaktere gefunden – eventuell sind die Rechte des API-Keys eingeschränkt.</li>';
+        } else {
+          chars.forEach((c) => {
+            const li = document.createElement("li");
+            li.textContent = c;
+            listEl.appendChild(li);
+          });
+        }
+
+        statusPill.textContent = `Charaktere geladen (${chars.length})`;
+        statusPill.style.borderColor = "rgba(34,197,94,0.7)";
+        statusPill.style.color = "var(--success)";
+        statusText.textContent = `Charakterliste für ${data.account?.name || "diesen Account"} geladen.`;
+      } catch (err) {
+        console.error("Charakter-Fehler:", err);
+        statusPill.textContent = "Fehler";
+        statusPill.style.borderColor = "rgba(248,113,113,0.8)";
+        statusPill.style.color = "var(--danger)";
+        statusText.textContent =
+          "Konnte Charaktere nicht laden: " +
+          err.message +
+          ". Prüfe, ob der Key den „characters“-Scope hat.";
+      }
+    }
+
+    document.getElementById("load-chars-btn").addEventListener("click", loadCharactersForSelected);
+
+    // ---------- APPLICATION FORM ----------
+    document.getElementById("apply-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("apply-name").value.trim();
+      const account = document.getElementById("apply-account").value.trim();
+      const time = document.getElementById("apply-time").value.trim();
+      const exp = document.getElementById("apply-experience").value.trim();
+      const msg = document.getElementById("apply-message").value.trim();
+      const output = document.getElementById("apply-output");
+      const feedback = document.getElementById("apply-feedback");
+
+      if (!name || !account || !msg) {
+        feedback.textContent = "Bitte fülle mindestens Name, Accountname und Nachricht aus.";
+        feedback.className = "form-error";
+        return;
+      }
+
+      const text = [
+        `Hey Käsekuchen.EV-Team,`,
+        "",
+        `mein Name ist ${name} (Account: ${account}).`,
+        time ? `Ich spiele meistens: ${time}.` : "",
+        exp ? `Meine GW2-Erfahrung: ${exp}.` : "",
+        "",
+        `Darum möchte ich zu euch:`,
+        msg,
+        "",
+        `Liebe Grüße`,
+        name
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      output.value = text;
+      feedback.textContent =
+        "Bewerbungstext wurde erzeugt. Du kannst ihn jetzt kopieren und im Discord posten.";
+      feedback.className = "form-success";
+    });
+
+    // ---------- INIT ----------
+    document.addEventListener("DOMContentLoaded", () => {
+      loadGuildInfo();
+      loadGuildMembers();
+      loadAccounts();
+    });
+  </script>
+</body>
+</html>
