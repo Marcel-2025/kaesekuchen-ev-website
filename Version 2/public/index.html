@@ -601,6 +601,10 @@
       <option value="autumn">🍂 Herbst</option>
     </select>
     <input type="color" id="accent-picker" class="accent-picker" title="Akzentfarbe anpassen" />
+      <label style="display:flex;align-items:center;gap:0.25rem;font-size:0.7rem;color:var(--muted);">
+      <input type="checkbox" id="theme-auto-toggle" style="scale:1.1;" />
+      Auto-Theme
+    </label>
   </div>
 </div>
 
@@ -864,16 +868,65 @@
       localStorage.setItem(ACCENT_KEY, color);
     }
 
+    const AUTO_MODE_KEY = "kkev-theme-auto";
+
+    // einfache Event-Erkennung (GW2-Events grob nach Datum)
+    function detectGw2EventTheme(date = new Date()) {
+      const m = date.getMonth() + 1; // 1–12
+      const d = date.getDate();
+
+      // Halloween: ca. 15.10–2.11
+      if ((m === 10 && d >= 15) || (m === 11 && d <= 2)) {
+        return "halloween";
+      }
+
+      // Wintersday: ca. 10.12–5.1
+      if ((m === 12 && d >= 10) || (m === 1 && d <= 5)) {
+        return "winter";
+      }
+
+      // später könntest du hier auch Lunar New Year, SAB etc. einbauen
+      return null;
+    }
+
+    // Jahreszeiten-Erkennung (grob nach Monat)
+    function detectSeasonalTheme(date = new Date()) {
+      const m = date.getMonth() + 1;
+
+      if (m === 12 || m === 1 || m === 2) return "winter";  // Winter
+      if (m >= 3 && m <= 5) return "spring";                // Frühling
+      if (m >= 9 && m <= 11) return "autumn";               // Herbst
+
+      // Sommer: nimm einfach Light oder Dark, wie du magst
+      return "light";
+    }
+
+    // wählt Event-Theme, sonst Season-Theme
+    function getAutoThemeForToday() {
+      const now = new Date();
+      const eventTheme = detectGw2EventTheme(now);
+      if (eventTheme) return eventTheme;
+      return detectSeasonalTheme(now);
+    }
+
     // Initial Theme/Accent laden
     (function initTheme() {
-      const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
-      applyTheme(savedTheme);
+    const autoMode = localStorage.getItem(AUTO_MODE_KEY) === "1";
+    const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
 
-      const savedAccent = localStorage.getItem(ACCENT_KEY);
-      if (savedAccent) {
-        applyAccentColor(savedAccent);
-      }
-    })();
+    if (autoMode) {
+      const autoTheme = getAutoThemeForToday();
+      applyTheme(autoTheme);
+    } else {
+      applyTheme(savedTheme);
+    }
+
+    const savedAccent = localStorage.getItem(ACCENT_KEY);
+    if (savedAccent) {
+      applyAccentColor(savedAccent);
+    }
+  })();
+
 
     function formatDate(iso) {
       if (!iso) return "–";
@@ -1161,23 +1214,23 @@
       const out = document.getElementById("apply-output");
 
       out.value = `
-Hey Käsekuchen.EV,
+      Hey Käsekuchen.EV,
 
-ich bin ${name} (${account}).
+      ich bin ${name} (${account}).
 
-Spielzeiten: ${time || "-"}
-Erfahrung: ${exp || "-"}
+      Spielzeiten: ${time || "-"}
+      Erfahrung: ${exp || "-"}
 
-Warum ich zu euch möchte:
-${msg}
+      Warum ich zu euch möchte:
+      ${msg}
 
-Liebe Grüße,
-${name}
+      Liebe Grüße,
+      ${name}
       `.trim();
     });
 
     /* ---------------- INIT ---------------- */
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
   loadGuildInfo();
   loadGuildMembers();
   loadGuildHall();
@@ -1185,16 +1238,27 @@ document.addEventListener("DOMContentLoaded", () => {
   loadGuildTreasury();
   loadAccounts();
 
-  // Theme-Controls
   const themeSelect = document.getElementById("theme-select");
   const accentPicker = document.getElementById("accent-picker");
+  const autoToggle = document.getElementById("theme-auto-toggle");
+
+  const autoMode = localStorage.getItem(AUTO_MODE_KEY) === "1";
+
+  if (autoToggle) {
+    autoToggle.checked = autoMode;
+  }
 
   if (themeSelect) {
-    // initial Wert setzen (falls localStorage schon was hat)
-    const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
-    themeSelect.value = savedTheme;
+    const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+    themeSelect.value = currentTheme;
 
     themeSelect.addEventListener("change", () => {
+      // sobald der User manuell ein Theme wählt → Auto-Mode aus
+      if (autoToggle) {
+        autoToggle.checked = false;
+      }
+      localStorage.setItem(AUTO_MODE_KEY, "0");
+
       const t = themeSelect.value;
       localStorage.setItem(THEME_KEY, t);
       applyTheme(t);
@@ -1206,7 +1270,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (savedAccent) {
       accentPicker.value = savedAccent;
     } else {
-      // fallback: aktuelle Accent-Farbe aus CSS holen
       const cs = getComputedStyle(document.documentElement);
       const accent = cs.getPropertyValue("--accent").trim() || "#f97316";
       accentPicker.value = accent;
@@ -1214,6 +1277,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     accentPicker.addEventListener("input", () => {
       applyAccentColor(accentPicker.value);
+    });
+  }
+
+  if (autoToggle) {
+    autoToggle.addEventListener("change", () => {
+      const enabled = autoToggle.checked;
+      localStorage.setItem(AUTO_MODE_KEY, enabled ? "1" : "0");
+
+      if (enabled) {
+        const autoTheme = getAutoThemeForToday();
+        applyTheme(autoTheme);
+      } else {
+        const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
+        applyTheme(savedTheme);
+      }
     });
   }
 });
