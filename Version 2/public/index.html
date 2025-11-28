@@ -32,6 +32,88 @@
       --success: #16a34a;
     }
 
+          /* Winter – kalt, clean, icy blau */
+      [data-theme="winter"] {
+        --bg: #020617;
+        --bg-soft: #02081f;
+        --bg-softer: #081226;
+        --text: #e5f2ff;
+        --muted: #9ca3c7;
+        --accent: #38bdf8;           /* Eisblau */
+        --accent-soft: rgba(56, 189, 248, 0.16);
+        --border: rgba(148, 163, 184, 0.5);
+        --danger: #f97373;
+        --success: #4ade80;
+      }
+
+      /* Halloween – violett + orange, spooky */
+      [data-theme="halloween"] {
+        --bg: #050112;
+        --bg-soft: #0b041f;
+        --bg-softer: #140624;
+        --text: #fde68a;
+        --muted: #a78bfa;
+        --accent: #f97316;           /* Kürbis-Orange */
+        --accent-soft: rgba(249, 115, 22, 0.25);
+        --border: rgba(168, 85, 247, 0.65);
+        --danger: #fb7185;
+        --success: #22c55e;
+      }
+
+      /* Frühling – hell, frisch, grünlich/rosa */
+      [data-theme="spring"] {
+        --bg: #ecfeff;
+        --bg-soft: #ffffff;
+        --bg-softer: #fdf2ff;
+        --text: #022c22;
+        --muted: #6b7280;
+        --accent: #22c55e;           /* Frühlingsgrün */
+        --accent-soft: rgba(34, 197, 94, 0.15);
+        --border: rgba(148, 163, 184, 0.6);
+        --danger: #dc2626;
+        --success: #16a34a;
+      }
+
+      /* Herbst – warm, orange, braun */
+      [data-theme="autumn"] {
+        --bg: #1f1308;
+        --bg-soft: #25160a;
+        --bg-softer: #2f1a0c;
+        --text: #fef3c7;
+        --muted: #fed7aa;
+        --accent: #f97316;           /* Herbst-Orange */
+        --accent-soft: rgba(249, 115, 22, 0.22);
+        --border: rgba(248, 171, 94, 0.7);
+        --danger: #f97373;
+        --success: #22c55e;
+      }
+
+      /* Kleine Styles für Theme-Controls */
+      .theme-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .theme-select {
+        font-size: 0.75rem;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--bg-soft);
+        color: var(--muted);
+        padding: 0.25rem 0.6rem;
+      }
+
+      .accent-picker {
+        width: 30px;
+        height: 30px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+      }
+
     * {
       box-sizing: border-box;
     }
@@ -506,11 +588,23 @@
         </div>
       </div>
       <div class="nav-right">
-        <a href="https://discord.gg/QKzbUV2wab" target="_blank" class="btn btn-primary">
-          💬 Discord
-        </a>
-        <button class="btn btn-outline" id="theme-toggle">🌙 Theme</button>
-      </div>
+  <a href="https://discord.gg/QKzbUV2wab" target="_blank" class="btn btn-primary">
+    💬 Discord
+  </a>
+  <div class="theme-controls">
+    <select id="theme-select" class="theme-select">
+      <option value="dark">Standard Dark</option>
+      <option value="light">Standard Light</option>
+      <option value="winter">❄️ Winter</option>
+      <option value="halloween">🎃 Halloween</option>
+      <option value="spring">🌸 Frühling</option>
+      <option value="autumn">🍂 Herbst</option>
+    </select>
+    <input type="color" id="accent-picker" class="accent-picker" title="Akzentfarbe anpassen" />
+  </div>
+</div>
+
+
     </div>
   </header>
 
@@ -753,24 +847,33 @@
   <script>
     /* --------------- THEME --------------- */
     const THEME_KEY = "kkev-theme";
-    const toggleBtn = document.getElementById("theme-toggle");
+    const ACCENT_KEY = "kkev-accent";
 
     function applyTheme(theme) {
       document.documentElement.setAttribute("data-theme", theme);
-      toggleBtn.textContent = theme === "dark" ? "🌙 Theme" : "☀️ Theme";
+      const select = document.getElementById("theme-select");
+      if (select && select.value !== theme) {
+        select.value = theme;
+      }
     }
 
-    (function initTheme() {
-      const saved = localStorage.getItem(THEME_KEY) || "dark";
-      applyTheme(saved);
-    })();
+    function applyAccentColor(color) {
+      if (!color) return;
+      document.documentElement.style.setProperty("--accent", color);
+      document.documentElement.style.setProperty("--accent-soft", `${color}33`); // leichte Transparenz
+      localStorage.setItem(ACCENT_KEY, color);
+    }
 
-    toggleBtn.addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme");
-      const next = current === "dark" ? "light" : "dark";
-      applyTheme(next);
-      localStorage.setItem(THEME_KEY, next);
-    });
+    // Initial Theme/Accent laden
+    (function initTheme() {
+      const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
+      applyTheme(savedTheme);
+
+      const savedAccent = localStorage.getItem(ACCENT_KEY);
+      if (savedAccent) {
+        applyAccentColor(savedAccent);
+      }
+    })();
 
     function formatDate(iso) {
       if (!iso) return "–";
@@ -1074,14 +1177,46 @@ ${name}
     });
 
     /* ---------------- INIT ---------------- */
-    document.addEventListener("DOMContentLoaded", () => {
-      loadGuildInfo();
-      loadGuildMembers();
-      loadGuildHall();
-      loadGuildLog();
-      loadGuildTreasury();
-      loadAccounts();
+document.addEventListener("DOMContentLoaded", () => {
+  loadGuildInfo();
+  loadGuildMembers();
+  loadGuildHall();
+  loadGuildLog();
+  loadGuildTreasury();
+  loadAccounts();
+
+  // Theme-Controls
+  const themeSelect = document.getElementById("theme-select");
+  const accentPicker = document.getElementById("accent-picker");
+
+  if (themeSelect) {
+    // initial Wert setzen (falls localStorage schon was hat)
+    const savedTheme = localStorage.getItem(THEME_KEY) || "dark";
+    themeSelect.value = savedTheme;
+
+    themeSelect.addEventListener("change", () => {
+      const t = themeSelect.value;
+      localStorage.setItem(THEME_KEY, t);
+      applyTheme(t);
     });
+  }
+
+  if (accentPicker) {
+    const savedAccent = localStorage.getItem(ACCENT_KEY);
+    if (savedAccent) {
+      accentPicker.value = savedAccent;
+    } else {
+      // fallback: aktuelle Accent-Farbe aus CSS holen
+      const cs = getComputedStyle(document.documentElement);
+      const accent = cs.getPropertyValue("--accent").trim() || "#f97316";
+      accentPicker.value = accent;
+    }
+
+    accentPicker.addEventListener("input", () => {
+      applyAccentColor(accentPicker.value);
+    });
+  }
+});
   </script>
 </body>
 </html>
