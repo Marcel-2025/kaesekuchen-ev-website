@@ -140,17 +140,48 @@
 
         members.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
 
-        members.forEach(m => {
-          const tr = document.createElement("tr");
+        
+let invitedCount = 0;
+let visibleMembers = [];
 
-          tr.innerHTML = `
-            <td>${m.name}</td>
-            <td><span class="rank-pill ${m.rank.toLowerCase().includes("leader") ? "leader" : ""}">${m.rank}</span></td>
-            <td>${formatDate(m.joined)}</td>
-          `;
+members.forEach(m => {
+  const isInvited = (m.rank || "").toLowerCase().includes("invite");
+  if (isInvited) {
+    invitedCount++;
+    return; // nicht in Haupttabelle anzeigen
+  }
+  visibleMembers.push(m);
 
-          body.appendChild(tr);
-        });
+  const tr = document.createElement("tr");
+
+  const isOnline = m.online === true || m.status === "Online";
+
+  tr.innerHTML = `
+    <td>
+      <div class="member-name">
+        <span class="status-dot ${isOnline ? "online" : "offline"}"></span>
+        <span>${m.name}</span>
+      </div>
+    </td>
+    <td>
+      <span class="rank-pill ${(m.rank || "").toLowerCase().includes("leader") ? "leader" : ""}">
+        ${m.rank || "-"}
+      </span>
+    </td>
+    <td>${formatDate(m.joined)}</td>
+  `;
+
+  body.appendChild(tr);
+});
+
+// Statuspill aktualisieren
+if (invitedCount > 0) {
+  pill.textContent = `Geladen (${invitedCount} Einladungen ausgeblendet)`;
+} else {
+  pill.textContent = "Geladen";
+}
+
+counter.textContent = visibleMembers.length;
 
         pill.textContent = "Geladen";
       } catch (err) {
