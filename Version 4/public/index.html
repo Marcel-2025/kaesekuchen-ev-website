@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div id="season-decor-root"></div>
   <header>
     <div class="nav">
       <div class="logo">
@@ -55,7 +56,7 @@
           <span class="highlight">Käsekuchen.EV</span><br />
           Die gemütlichste Gilde in Tyria.
         </h1>
-        <p class="hero-desc">Raids, Strikes, Fraktale, WvW und entspannte Feierabendruns – bei uns stehen Teamplay, Humor und eine ordentliche Portion Käsekuchen im Fokus. Bring deine Builds, deinen Humor und deinen Hunger mit. 🍰🔥</p>
+        <p class="hero-desc">Raids, Fraktale, WvW, entspannte Runs und geile Leute. 🍰🔥</p>
 
         <div class="hero-tags">
           <span class="hero-tag">💬 Discord Community</span>
@@ -210,6 +211,7 @@
         </div>
       </div>
 
+      
       <div class="card">
         <div style="display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;margin-bottom:0.8rem;">
           <select id="account-select" class="select">
@@ -222,8 +224,10 @@
 
         <ul class="characters-list" id="characters-list"></ul>
         <p class="status-text" id="accounts-status-text"></p>
+        <div id="char-detail-panel" class="char-detail-card"></div>
       </div>
     </section>
+
 
     <!-- APPLICATION FORM -->
     <section id="apply">

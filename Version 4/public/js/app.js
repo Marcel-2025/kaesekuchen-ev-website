@@ -87,6 +87,27 @@
       return d.toLocaleDateString("de-DE");
     }
 
+    function relativeTime(iso) {
+      if (!iso) return "";
+      const d = new Date(iso);
+      if (isNaN(d)) return "";
+      const diffMs = Date.now() - d.getTime();
+      const sec = Math.round(diffMs / 1000);
+      const min = Math.round(sec / 60);
+      const h = Math.round(min / 60);
+      const day = Math.round(h / 24);
+      if (sec < 60) return "vor wenigen Sekunden";
+      if (min < 60) return `vor ${min} Minuten`;
+      if (h < 24) return `vor ${h} Stunden`;
+      if (day < 7) return `vor ${day} Tagen`;
+      const weeks = Math.round(day / 7);
+      if (weeks < 5) return `vor ${weeks} Wochen`;
+      const months = Math.round(day / 30);
+      if (months < 12) return `vor ${months} Monaten`;
+      const years = Math.round(day / 365);
+      return `vor ${years} Jahren`;
+    }
+
     /* ---------------- GUILD INFO ---------------- */
     async function loadGuildInfo() {
       const nameEl = document.getElementById("guild-name");
@@ -148,12 +169,11 @@ members.forEach(m => {
   const isInvited = (m.rank || "").toLowerCase().includes("invite");
   if (isInvited) {
     invitedCount++;
-    return; // nicht in Haupttabelle anzeigen
+    return;
   }
   visibleMembers.push(m);
 
   const tr = document.createElement("tr");
-
   const isOnline = m.online === true || m.status === "Online";
 
   tr.innerHTML = `
@@ -174,7 +194,6 @@ members.forEach(m => {
   body.appendChild(tr);
 });
 
-// Statuspill aktualisieren
 if (invitedCount > 0) {
   pill.textContent = `Geladen (${invitedCount} Einladungen ausgeblendet)`;
 } else {
@@ -182,6 +201,7 @@ if (invitedCount > 0) {
 }
 
 counter.textContent = visibleMembers.length;
+
 
         pill.textContent = "Geladen";
       } catch (err) {
@@ -248,57 +268,98 @@ counter.textContent = visibleMembers.length;
       return `${t} – ${entry.type}`;
     }
 
-    async function loadGuildLog() {
-      const list = document.getElementById("guild-log-list");
-      const status = document.getElementById("guild-log-status");
-      list.innerHTML = "";
+    
+async function loadGuildLog() {
+  const list = document.getElementById("guild-log-list");
+  const status = document.getElementById("guild-log-status");
+  list.innerHTML = "";
 
-      try {
-        const res = await fetch("/api/guild-log");
-        if (!res.ok) throw new Error("HTTP " + res.status);
+  try {
+    const res = await fetch("/api/guild-log");
+    if (!res.ok) throw new Error("HTTP " + res.status);
 
-        const data = await res.json();
+    const data = await res.json();
 
-        data.log.forEach(e => {
-          const li = document.createElement("li");
-          li.textContent = formatLog(e);
-          list.appendChild(li);
-        });
+    list.className = "log-timeline";
 
-        status.textContent = "Geladen";
-      } catch (err) {
-        status.textContent = "Fehler: " + err.message;
-      }
-    }
+    data.log.forEach(e => {
+      const li = document.createElement("li");
+      li.className = "log-entry";
+
+      const timeText = e.time ? new Date(e.time).toLocaleString("de-DE") : "";
+      const rel = e.time ? relativeTime(e.time) : "";
+
+      const type = (e.type || "").toLowerCase();
+      let label = "Event";
+      if (type === "joined") label = "Beitritt";
+      else if (type === "kick") label = "Kick";
+      else if (type === "invited") label = "Einladung";
+      else if (type === "rank_change") label = "Rangänderung";
+      else if (type === "motd") label = "MOTD";
+
+      let text = formatLog(e);
+
+      li.innerHTML = `
+        <div class="log-dot"></div>
+        <div class="log-entry-meta">
+          <span class="log-entry-type">${label}</span>
+          <span>${timeText}</span>
+          <span>${rel}</span>
+        </div>
+        <div>${text}</div>
+      `;
+
+      list.appendChild(li);
+    });
+
+    status.textContent = "Geladen";
+  } catch (err) {
+    status.textContent = "Fehler: " + err.message;
+  }
+}
+
+
 
     /* ---------------- TREASURY ---------------- */
-    async function loadGuildTreasury() {
-      const tbody = document.getElementById("treasury-body");
-      const status = document.getElementById("treasury-status");
-      tbody.innerHTML = "";
+    
+async function loadGuildTreasury() {
+  const tbody = document.getElementById("treasury-body");
+  const status = document.getElementById("treasury-status");
+  tbody.innerHTML = "";
 
-      try {
-        const res = await fetch("/api/guild-treasury");
-        if (!res.ok) throw new Error("HTTP " + res.status);
+  try {
+    const res = await fetch("/api/guild-treasury");
+    if (!res.ok) throw new Error("HTTP " + res.status);
 
-        const data = await res.json();
-        const items = data.treasury || [];
+    const data = await res.json();
+    const items = data.treasury || [];
 
-        items.slice(0, 20).forEach(t => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${t.item_id}</td>
-            <td style="text-align:right">${t.count}</td>
-            <td style="text-align:right">${t.required}</td>
-          `;
-          tbody.appendChild(tr);
-        });
+    items.slice(0, 20).forEach(t => {
+      const have = t.count || 0;
+      const need = t.required || 0;
+      const pct = need > 0 ? Math.min(100, Math.round(have / need * 100)) : 0;
 
-        status.textContent = "Geladen";
-      } catch (err) {
-        status.textContent = "Fehler: " + err.message;
-      }
-    }
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>
+          <div>${t.item_name || t.item_id}</div>
+          <div class="treasury-progress">
+            <div class="treasury-progress-fill" style="width:${pct}%;"></div>
+          </div>
+        </td>
+        <td style="text-align:right">${have}</td>
+        <td style="text-align:right">${need}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    status.textContent = "Geladen";
+  } catch (err) {
+    status.textContent = "Fehler: " + err.message;
+  }
+}
+
+
 
     /* ---------------- ACCOUNTS / CHARS ---------------- */
     async function loadAccounts() {
@@ -354,35 +415,44 @@ counter.textContent = visibleMembers.length;
       }
     }
 
-    async function loadCharDetail(accId, charName) {
-      const status = document.getElementById("accounts-status-text");
-      status.textContent = `Lade Details für ${charName}…`;
+    
+async function loadCharDetail(accId, charName) {
+  const status = document.getElementById("accounts-status-text");
+  const panel = document.getElementById("char-detail-panel");
+  if (panel) {
+    panel.innerHTML = "";
+  }
 
-      try {
-        const res = await fetch(`/api/accounts/${accId}/characters/${charName}`);
-        if (!res.ok) throw new Error("HTTP " + res.status);
+  status.textContent = `Lade Details für ${charName}…`;
 
-        const data = await res.json();
-        const c = data.character;
+  try {
+    const res = await fetch(`/api/accounts/${accId}/characters/${charName}`);
+    if (!res.ok) throw new Error("HTTP " + res.status);
 
-        const list = document.getElementById("characters-list");
-        const detail = document.createElement("li");
-        detail.style.color = "var(--muted)";
-        detail.innerHTML = `
-          <strong>${c.name}</strong><br>
-          Level ${c.level} ${c.race} ${c.profession}<br>
-          Tode: ${c.deaths}<br>
-          Erstellt: ${formatDate(c.created)}
-        `;
+    const data = await res.json();
+    const c = data.character;
 
-        list.appendChild(detail);
-        status.textContent = "Details geladen";
-      } catch (err) {
-        status.textContent = "Fehler: " + err.message;
-      }
+    if (panel) {
+      panel.innerHTML = `
+        <div class="char-detail-name">${c.name}</div>
+        <div class="char-detail-meta">
+          <span>Level ${c.level}</span>
+          <span>${c.race}</span>
+          <span>${c.profession}</span>
+          <span>Tode: ${c.deaths}</span>
+          <span>Erstellt: ${formatDate(c.created)}</span>
+        </div>
+      `;
     }
 
-    document.getElementById("load-chars-btn").onclick = loadCharacters;
+    status.textContent = "Details geladen";
+  } catch (err) {
+    status.textContent = "Fehler: " + err.message;
+  }
+}
+
+document.getElementById("load-chars-btn").onclick = loadCharacters;
+").onclick = loadCharacters;
 
     /* ---------------- APPLICATION FORM ---------------- */
     document.getElementById("apply-form").addEventListener("submit", e => {

@@ -638,6 +638,7 @@
       justify-content: space-between;
     }
 
+/* --- Member status + invited note --- */
 .member-name {
   display: flex;
   align-items: center;
@@ -658,15 +659,109 @@
 .status-dot.offline {
   background: #6b7280;
   box-shadow: none;
-  opacity: 0.8;
-}
-
-.invited-row {
-  opacity: 0.6;
+  opacity: 0.75;
 }
 
 .invited-note {
   margin-top: 0.4rem;
   font-size: 0.75rem;
   color: var(--muted);
+}
+
+/* --- Log Timeline --- */
+.log-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.log-timeline::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  opacity: 0.4;
+}
+
+.log-entry {
+  position: relative;
+  padding-left: 1.8rem;
+  padding-bottom: 0.6rem;
+  font-size: 0.8rem;
+}
+
+.log-entry:last-child {
+  padding-bottom: 0;
+}
+
+.log-dot {
+  position: absolute;
+  left: 4px;
+  top: 0.15rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.18);
+}
+
+.log-entry-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  margin-bottom: 0.1rem;
+}
+
+.log-entry-type {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.65rem;
+}
+
+/* --- Treasury progress --- */
+.treasury-progress {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background-color: rgba(15, 23, 42, 0.9);
+  overflow: hidden;
+  margin-top: 0.15rem;
+}
+
+.treasury-progress-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), #facc15);
+}
+
+/* --- Character detail card --- */
+.char-detail-card {
+  margin-top: 0.7rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background-color: var(--bg-softer);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.char-detail-name {
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+  color: var(--text);
+}
+
+.char-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 0.78rem;
 }
